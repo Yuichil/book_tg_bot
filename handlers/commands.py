@@ -3,7 +3,7 @@ from aiogram import Router
 from aiogram.filters import Command, or_f
 from aiogram.types import Message
 
-from keyboards.inline import start
+from keyboards.inline import start, your_list, compilation
 
 command_router = Router()
 
@@ -11,12 +11,10 @@ command_router = Router()
 @command_router.message(or_f(Command("start"), (F.text == "Дом 🏠")))
 async def command_start_handler(message: Message) -> None:
     text = (
-        "Привет, я BookBuddy! Я твой книжный ассистент! "
-        "Готов помочь найти, порекомендовать рекомендациями или ответить на любые вопросы о книгах. "
-        "Ещё я предоставляю информацию о книгах и помогу тебе создать списки для чтения. \n\n "
-        "Какую книгу ты ищешь сегодня?")
+        "Привет, я <i>BookBuddy</i>! Я твой книжный ассистент! Готов помочь найти и порекомендовать книги. Ещё я предоставляю информацию о книгах и помогу тебе создать списки для чтения. \n\n "
+        "Что вас интересует?")
 
-    await message.answer(text, reply_markup=start)
+    await message.answer(text, reply_markup=start, parse_mode="HTML")
 
 
 @command_router.message(or_f(Command("opportunities"), (F.text == "Возможности")))
@@ -38,34 +36,30 @@ async def command_opportunities(message: Message) -> None:
     await message.answer(text, reply_markup=start)
 
 
-@command_router.message(or_f(Command("recommendations"), (F.text == "Рекомендации")))
-async def command_rec(message: Message) -> None:
-    text = "Вот что популярно у пользователей в последнее время"
-    await message.answer(text, reply_markup=start)
-
-
 @command_router.message(or_f(Command("compilation"), (F.text == "Подборка 📚")))
 async def command_compilation(message: Message) -> None:
-    text = "Вот подборка основанная на ваших интересах"
-    await message.answer(text, reply_markup=start)
+    text = "Какой жанр хотите почитать сегодня"
+    await message.answer(text, reply_markup=compilation)
 
 
-@command_router.message(or_f(Command("yourlist"), (F.text == "Ваш список 📋")))
-async def command_yourlist(message: Message) -> None:
-    text = "Список ваших закладок"
-    await message.answer(text, reply_markup=start)
+@command_router.message(or_f(Command("your_list"), (F.text == "Ваш список 📋")))
+async def command_your_list(message: Message) -> None:
+    text = "Вывести весь список или добавитть новую книгу?"
+    await message.answer(text, reply_markup=your_list)
 
 
-@command_router.message(or_f(Command("reviews"), (F.text == "Отзывы и обсуждения 💬")))
-async def command_reviews(message: Message) -> None:
-    text = "Последние новости и отзывы о книгах"
-    await message.answer(text, reply_markup=start)
-
+# @command_router.message(or_f(Command("watch_list"), (F.text == "Посмотреть список книг")))
+# async def command_yourlist(message: Message) -> None:
+#     await message.answer(reply_markup=your_list)
 
 @command_router.message(Command("help"))
 async def command_help_handler(message: Message) -> None:
-    text = ("I am book assistant. This is my commands: \n"
-            "/start \n"
-            "/about \n"
-            "/help \n")
+    text = ("/start - перезапустить бота\n"
+            "/help - помощь\n"
+            "/opportunities - что умеет этот бот\n"
+            "/search - поиск книг\n"
+            "/compilation - поборка по жанрам\n"
+            "/your_list - добавить или посмотреть список\n"
+            "/form - добавить книгу в список\n"
+            )
     await message.answer(text)

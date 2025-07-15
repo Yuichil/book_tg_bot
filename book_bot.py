@@ -1,22 +1,25 @@
+import asyncio
+import os
+
 from aiogram import Dispatcher, Bot
-from aiogram.filters import Command
-from aiogram.types import Message
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
-from handlers.commands import command_router
-from handlers.callbacks import callbacks_router
-
-
+from aiogram.fsm.storage.memory import MemoryStorage
 from dotenv import load_dotenv
-import os
-import asyncio
+
+from fsm import fsm_router
+from handlers.callbacks import callbacks_router
+from handlers.commands import command_router
 
 load_dotenv()
 TOKEN = os.getenv("BOT_TOKEN")
 
+storage = MemoryStorage()
+
 dp = Dispatcher()
 dp.include_router(command_router)
 dp.include_router(callbacks_router)
+dp.include_router(fsm_router)
 
 
 async def main():
