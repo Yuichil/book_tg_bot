@@ -3,18 +3,24 @@ from aiogram import Router
 from aiogram.filters import Command, or_f
 from aiogram.types import Message
 
+from database import get_user_books
 from keyboards.inline import start, your_list, compilation
 
 command_router = Router()
 
 
-@command_router.message(or_f(Command("start"), (F.text == "Дом 🏠")))
+@command_router.message(Command("start"))
 async def command_start_handler(message: Message) -> None:
     text = (
         "Привет, я <i>BookBuddy</i>! Я твой книжный ассистент! Готов помочь найти и порекомендовать книги. Ещё я предоставляю информацию о книгах и помогу тебе создать списки для чтения. \n\n "
         "Что вас интересует?")
 
     await message.answer(text, reply_markup=start, parse_mode="HTML")
+
+@command_router.message(or_f(Command("home"), (F.text == "Дом 🏠")))
+async def command_start_handler(message: Message) -> None:
+    text ="Дом 🏠"
+    await message.answer(text, reply_markup=start)
 
 
 @command_router.message(or_f(Command("opportunities"), (F.text == "Возможности")))
@@ -48,9 +54,16 @@ async def command_your_list(message: Message) -> None:
     await message.answer(text, reply_markup=your_list)
 
 
-# @command_router.message(or_f(Command("watch_list"), (F.text == "Посмотреть список книг")))
-# async def command_yourlist(message: Message) -> None:
-#     await message.answer(reply_markup=your_list)
+@command_router.message(or_f(Command("watch_list"), (F.text == "Посмотреть список книг")))
+async def command_your_list(message: Message) -> None:
+    user_id = message.from_user.id
+    l = get_user_books(user_id)
+
+    user_list = "Ваш список книг: \n"
+    for line in l:
+        user_list += f"{line[1]} - {line[2]} \n"
+    await message.answer(user_list)
+
 
 @command_router.message(Command("help"))
 async def command_help_handler(message: Message) -> None:

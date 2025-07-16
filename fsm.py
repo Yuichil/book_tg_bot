@@ -3,6 +3,8 @@ from aiogram.filters import Command, or_f
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message, ReplyKeyboardRemove
 
+from database import add_list
+from keyboards.inline import your_list
 from states import Form
 
 fsm_router = Router()
@@ -24,6 +26,10 @@ async def process_genre(message: Message, state: FSMContext):
 @fsm_router.message(Form.author)
 async def process_add_or_not(message: Message, state: FSMContext):
     await state.update_data(author=message.text)
-    mylist = await state.get_data()
-    print(mylist)
+    data = await state.get_data()
+    print(data)
+    await message.answer(f"{data['name']} - {data['author']} добавлена ✅", reply_markup=your_list)
+    user_id = message.from_user.id
+    add_list(data['name'], data['author'], user_id)
     await state.clear()
+
