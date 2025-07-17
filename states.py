@@ -7,3 +7,5 @@ command_router = Router()
 class Form(StatesGroup):
     name = State()
     author = State()
+    genre = State()
+    autinfication = State()

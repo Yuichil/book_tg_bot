@@ -9,7 +9,3 @@ async def to_help(callback: CallbackQuery):
     await callback.answer()
     mes = "Помогу чем смогу."
     await callback.message.answer(text=mes)
-
-
-
-
