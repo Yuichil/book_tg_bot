@@ -20,7 +20,7 @@ conn.commit()
 def add_list(user_id, name, author, genre):
     cursor.execute('''
     INSERT INTO List (user_id, name, author, genre)
-    VALUES (?, ?, ?, ?, ?)
+    VALUES (?, ?, ?, ?)
         
 ''', (user_id, name, author, genre))
     conn.commit()
