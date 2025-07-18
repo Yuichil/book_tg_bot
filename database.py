@@ -20,7 +20,7 @@ conn.commit()
 def add_list(user_id, name, author, genre):
     cursor.execute('''
     INSERT INTO List (user_id, name, author, genre)
-    VALUES (?, ?, ?, ?)
+    VALUES (?, ?, ?, ?, ?)
         
 ''', (user_id, name, author, genre))
     conn.commit()
@@ -47,3 +47,4 @@ def find_books(name,author):
         WHERE name = ? AND author = ?
     ''', (name,author,))
     return all_lines.fetchall()
+
