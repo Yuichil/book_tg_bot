@@ -9,3 +9,6 @@ class Form(StatesGroup):
     author = State()
     genre = State()
     autinfication = State()
+    search_name = State()
+    search_auth = State()
+

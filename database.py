@@ -17,12 +17,12 @@ cursor.execute('''
 conn.commit()
 
 
-def add_list(user_id, name, author, genre,sh_desc):
+def add_list(user_id, name, author, genre):
     cursor.execute('''
-    INSERT INTO List (user_id, name, author, genre,sh_desc)
+    INSERT INTO List (user_id, name, author, genre)
     VALUES (?, ?, ?, ?)
         
-''', (user_id, name, author, genre,"Книга добавлена пользователем, краткое содержание не добавлено"))
+''', (user_id, name, author, genre))
     conn.commit()
 
 
@@ -39,4 +39,11 @@ def get_user_books(user_id):
         SELECT * FROM List 
         WHERE user_id = ?  
     ''', (user_id,))
+    return all_lines.fetchall()
+
+def find_books(name,author):
+    all_lines = cursor.execute('''
+        SELECT name, author, sh_desc FROM List 
+        WHERE name = ? AND author = ?
+    ''', (name,author,))
     return all_lines.fetchall()

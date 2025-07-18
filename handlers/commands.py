@@ -34,10 +34,10 @@ async def command_opportunities(message: Message) -> None:
     await message.answer(text, reply_markup=start, parse_mode="HTML")
 
 
-@command_router.message(or_f(Command("search"), (F.text == "Поиск 🔍")))
-async def command_opportunities(message: Message) -> None:
-    text = "Введите фИО автора и навание книги"
-    await message.answer(text, reply_markup=start)
+# @command_router.message(or_f(Command("search"), (F.text == "Поиск 🔍")))
+# async def command_opportunities(message: Message) -> None:
+#     text = "Введите Название книги"
+#     await message.answer(text, reply_markup=start)
 
 
 @command_router.message(or_f(Command("compilation"), (F.text == "Подборка 📚")))
@@ -58,8 +58,11 @@ async def command_your_list(message: Message) -> None:
     l = get_user_books(user_id)
     user_list = "Ваш список книг: \n"
     for line in l:
-        user_list += f"{line[1]} - {line[2]} \n"
+        user_list += f"{line[2]} - {line[3]} \n"
     await message.answer(user_list)
+
+
+
 
 @command_router.message(Command("help"))
 async def command_help_handler(message: Message) -> None:
@@ -68,7 +71,7 @@ async def command_help_handler(message: Message) -> None:
             "/opportunities - что умеет этот бот\n"
             "/search - поиск книг\n"
             "/compilation - поборка по жанрам\n"
-            "/your_list - добавить или посмотреть список\n"
+            "/your_list - посмотреть личный список\n"
             "/form - добавить книгу в список\n"
             )
     await message.answer(text)
